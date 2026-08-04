@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — PC Control</title>
+  <style>
+    body { max-width: 760px; margin: 40px auto; padding: 0 20px; font: 16px/1.6 system-ui, sans-serif; color: #1d2433; }
+    h1, h2 { line-height: 1.25; } a { color: #285ac8; }
+    .language-switch { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; }
+    button { border: 1px solid #b8c3d9; border-radius: 7px; background: #fff; color: #1d2433; padding: 6px 12px; font: inherit; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: #285ac8; background: #285ac8; color: #fff; }
+  </style>
+</head>
+<body>
+  <nav class="language-switch" aria-label="Language / Язык">
+    <button type="button" data-language="ru" aria-pressed="true">Русский</button>
+    <button type="button" data-language="en" aria-pressed="false">English</button>
+  </nav>
+
+  <main data-language-content="ru">
+    <h1>Политика конфиденциальности PC Control</h1>
+    <p>Дата вступления в силу: 5 августа 2026 г.</p>
+    <h2>Какие данные используются</h2>
+    <p>PC Control не требует регистрации, имени, номера телефона, адреса электронной почты, геолокации, рекламного идентификатора или доступа к контактам.</p>
+    <p>На телефоне хранятся названия добавленных ПК, идентификаторы устройств, токены и ключи связи. На ПК хранятся данные сопряжённых телефонов и ключи защищённого обмена. Эти данные нужны для повторного подключения и удалённого управления.</p>
+    <h2>Relay-сервер</h2>
+    <p>Для доставки сообщений relay-сервер обрабатывает технические данные подключения: IP-адрес, время и тип события, сокращённые фрагменты идентификаторов и токенов, имя устройства и данные сопряжения. Технические логи хранятся до 14 дней. Данные активных сопряжений сохраняются, пока не будут отозваны или удалены.</p>
+    <h2>Защита данных</h2>
+    <p>Команды и статусы между телефоном и ПК передаются через relay по защищённому соединению. Их содержимое дополнительно шифруется между сопряжёнными устройствами; relay-сервер передаёт зашифрованные сообщения и не предназначен для чтения их содержимого.</p>
+    <h2>Передача и удаление данных</h2>
+    <p>Данные не продаются и не используются для рекламы. Чтобы прекратить связь, удалите устройство в приложении или отзовите доступ на ПК — локальные данные на соответствующем устройстве будут удалены.</p>
+    <h2>Связь</h2>
+    <p>По вопросам конфиденциальности и удаления серверных данных напишите в <a href="https://t.me/grant1003">Telegram</a> или <a href="https://discord.com/users/kiano1">Discord</a>.</p>
+  </main>
+
+  <main data-language-content="en" hidden>
+    <h1>PC Control Privacy Policy</h1>
+    <p>Effective date: August 5, 2026</p>
+    <h2>Data we use</h2>
+    <p>PC Control does not require registration, your name, phone number, email address, location, advertising identifier, or access to contacts.</p>
+    <p>The phone stores the names of added PCs, device identifiers, tokens, and connection keys. The PC stores paired-device data and keys for secure communication. This data is needed for reconnection and remote control.</p>
+    <h2>Relay server</h2>
+    <p>To deliver messages, the relay server processes technical connection data: IP address, event time and type, shortened fragments of identifiers and tokens, device name, and pairing data. Technical logs are retained for up to 14 days. Active pairing data is retained until it is revoked or deleted.</p>
+    <h2>Data protection</h2>
+    <p>Commands and status information are sent between the phone and PC through the relay over a secure connection. Their contents are additionally encrypted between paired devices; the relay server forwards encrypted messages and is not intended to read their contents.</p>
+    <h2>Data sharing and deletion</h2>
+    <p>Data is not sold or used for advertising. To stop the connection, remove the device in the app or revoke access on the PC; local data on the relevant device will be deleted.</p>
+    <h2>Contact</h2>
+    <p>For privacy questions or deletion of server data, contact us through <a href="https://t.me/grant1003">Telegram</a> or <a href="https://discord.com/users/kiano1">Discord</a>.</p>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll('[data-language]');
+    const sections = document.querySelectorAll('[data-language-content]');
+    function setLanguage(language) {
+      document.documentElement.lang = language;
+      document.title = language === 'ru' ? 'Политика конфиденциальности — PC Control' : 'PC Control Privacy Policy';
+      sections.forEach(section => { section.hidden = section.dataset.languageContent !== language; });
+      buttons.forEach(button => { button.setAttribute('aria-pressed', String(button.dataset.language === language)); });
+      localStorage.setItem('pc-control-privacy-language', language);
+    }
+    buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+    const savedLanguage = localStorage.getItem('pc-control-privacy-language');
+    if (savedLanguage === 'en' || savedLanguage === 'ru') setLanguage(savedLanguage);
+  </script>
+</body>
+</html>
