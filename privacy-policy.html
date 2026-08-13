@@ -7,7 +7,7 @@
   <style>
     body { max-width: 760px; margin: 40px auto; padding: 0 20px; font: 16px/1.6 system-ui, sans-serif; color: #1d2433; }
     h1, h2 { line-height: 1.25; } a { color: #285ac8; }
-    .language-switch { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; }
+    .language-switch { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
     button { border: 1px solid #b8c3d9; border-radius: 7px; background: #fff; color: #1d2433; padding: 6px 12px; font: inherit; cursor: pointer; }
     button[aria-pressed="true"] { border-color: #285ac8; background: #285ac8; color: #fff; }
   </style>
@@ -15,37 +15,171 @@
 <body>
   <nav class="language-switch" aria-label="Language / Язык">
     <button type="button" data-language="ru" aria-pressed="true">Русский</button>
+    <button type="button" data-language="uk" aria-pressed="false">Українська</button>
     <button type="button" data-language="en" aria-pressed="false">English</button>
   </nav>
 
   <main data-language-content="ru">
     <h1>Политика конфиденциальности PC Control</h1>
-    <p>Дата вступления в силу: 5 августа 2026 г.</p>
-    <h2>Какие данные используются</h2>
-    <p>PC Control не требует регистрации, имени, номера телефона, адреса электронной почты, геолокации, рекламного идентификатора или доступа к контактам.</p>
-    <p>На телефоне хранятся названия добавленных ПК, идентификаторы устройств, токены и ключи связи. На ПК хранятся данные сопряжённых телефонов и ключи защищённого обмена. Эти данные нужны для повторного подключения и удалённого управления.</p>
+    <p>Дата вступления в силу: 14 августа 2026 г.</p>
+
+    <h2>Коротко</h2>
+    <p>PC Control не требует регистрации, имени, номера телефона, адреса электронной почты, рекламного идентификатора и доступа к контактам. Аккаунта в приложении нет. Данные не продаются и не используются для рекламы.</p>
+
+    <h2>Какие данные хранятся на устройствах</h2>
+    <p>На телефоне: названия добавленных компьютеров, идентификаторы устройств, токены и ключи связи, необходимые для повторного подключения. Секреты (токен устройства и ключ сквозного шифрования) хранятся в зашифрованном виде — ключ шифрования находится в защищённом хранилище Android (Keystore).</p>
+    <p>На компьютере: данные сопряжённых телефонов и ключи для защищённого обмена.</p>
+
+    <h2>Блокировка приложения: PIN-код и биометрия</h2>
+    <p>PIN-код — необязательная функция. Сам код нигде не сохраняется: на телефоне хранится только необратимый хеш от него со случайной солью, восстановить из которого исходный код нельзя.</p>
+    <p>Если включён вход по биометрии, приложение <strong>не получает и не хранит</strong> отпечатки пальцев, изображение лица или иные биометрические данные. Проверку выполняет операционная система Android, а приложению возвращается только результат: подтверждено или нет.</p>
+
+    <h2>Местоположение (функция «Геозона»)</h2>
+    <p>Геозона — необязательная функция, выключенная по умолчанию. Если вы её включаете, приложение запрашивает доступ к местоположению, в том числе в фоновом режиме — иначе система не сможет сообщить о выходе из зоны, когда приложение закрыто.</p>
+    <p>Координаты отмеченной точки «дома» и радиус зоны хранятся <strong>только на вашем телефоне</strong>. За пересечением границы следит системный сервис геолокации Google Play на самом устройстве. Ни координаты, ни маршруты, ни история перемещений, ни сам факт входа или выхода из зоны на relay-сервер и куда-либо ещё не передаются: при срабатывании отправляется ровно та же команда компьютеру, что и при нажатии кнопки вручную.</p>
+    <p>Функцию можно отключить в разделе «Настройки → Геозона», а выданное разрешение — отозвать в системных настройках телефона.</p>
+
+    <h2>Виджеты, плитка быстрых настроек и уведомления</h2>
+    <p>Чтобы виджет на рабочем столе и плитка в шторке показывали состояние компьютера сразу, приложение хранит на телефоне последний полученный снимок состояния: имя компьютера, признак «в сети», обезличенные показатели загрузки (процессор, память, диск, время работы) и время до запланированного выключения. Эти данные локальные и никуда не отправляются.</p>
+    <p>Уведомления (обратный отсчёт до выключения и сообщение о срабатывании геозоны) формируются на самом телефоне.</p>
+
+    <h2>Журнал событий</h2>
+    <p>Приложение ведёт локальный журнал последних команд: что было отправлено, какому компьютеру, откуда (из приложения, с виджета, из шторки, из уведомления или по геозоне) и чем закончилось. Хранится до 100 последних записей только на телефоне; журнал можно очистить кнопкой в разделе «Настройки → Журнал».</p>
+
+    <h2>Разрешения и зачем они нужны</h2>
+    <ul>
+      <li><strong>Интернет</strong> — связь с компьютером через relay-сервер.</li>
+      <li><strong>Камера</strong> — сканирование QR-кода при подключении компьютера. Изображение с камеры обрабатывается на устройстве и не сохраняется.</li>
+      <li><strong>Уведомления</strong> — обратный отсчёт таймера и сообщения о срабатывании автоматики.</li>
+      <li><strong>Местоположение, в том числе в фоне</strong> — только для функции «Геозона», если вы её включили.</li>
+      <li><strong>Биометрия</strong> — подтверждение личности при разблокировке приложения, если вы включили этот способ входа.</li>
+    </ul>
+
     <h2>Relay-сервер</h2>
     <p>Для доставки сообщений relay-сервер обрабатывает технические данные подключения: IP-адрес, время и тип события, сокращённые фрагменты идентификаторов и токенов, имя устройства и данные сопряжения. Технические логи хранятся до 14 дней. Данные активных сопряжений сохраняются, пока не будут отозваны или удалены.</p>
+
     <h2>Защита данных</h2>
-    <p>Команды и статусы между телефоном и ПК передаются через relay по защищённому соединению. Их содержимое дополнительно шифруется между сопряжёнными устройствами; relay-сервер передаёт зашифрованные сообщения и не предназначен для чтения их содержимого.</p>
+    <p>Команды и статусы между телефоном и компьютером передаются через relay по защищённому соединению. Их содержимое дополнительно шифруется между сопряжёнными устройствами; relay-сервер передаёт зашифрованные сообщения и не предназначен для чтения их содержимого.</p>
+
     <h2>Передача и удаление данных</h2>
-    <p>Данные не продаются и не используются для рекламы. Чтобы прекратить связь, удалите устройство в приложении или отзовите доступ на ПК — локальные данные на соответствующем устройстве будут удалены.</p>
+    <p>Данные не продаются и не передаются третьим лицам для рекламы или аналитики. Чтобы прекратить связь, удалите устройство в приложении или отзовите доступ на компьютере — локальные данные об этом устройстве, включая настройки его виджетов и геозоны, будут удалены. Удаление приложения стирает все локальные данные, включая PIN-код и журнал.</p>
+
+    <h2>Дети</h2>
+    <p>Приложение не предназначено для детей младше 13 лет и не собирает данные о них осознанно.</p>
+
+    <h2>Изменения политики</h2>
+    <p>Политика может обновляться вместе с новыми версиями приложения. Дата вступления в силу указана в начале страницы.</p>
+
     <h2>Связь</h2>
     <p>По вопросам конфиденциальности и удаления серверных данных напишите в <a href="https://t.me/grant1003">Telegram</a> или <a href="https://discord.com/users/kiano1">Discord</a>.</p>
   </main>
 
+  <main data-language-content="uk" hidden>
+    <h1>Політика конфіденційності PC Control</h1>
+    <p>Дата набрання чинності: 14 серпня 2026 р.</p>
+
+    <h2>Коротко</h2>
+    <p>PC Control не вимагає реєстрації, імені, номера телефону, електронної пошти, рекламного ідентифікатора та доступу до контактів. Облікового запису в застосунку немає. Дані не продаються і не використовуються для реклами.</p>
+
+    <h2>Які дані зберігаються на пристроях</h2>
+    <p>На телефоні: назви доданих комп'ютерів, ідентифікатори пристроїв, токени та ключі зв'язку, необхідні для повторного підключення. Секрети (токен пристрою і ключ наскрізного шифрування) зберігаються зашифрованими — ключ шифрування перебуває в захищеному сховищі Android (Keystore).</p>
+    <p>На комп'ютері: дані спарених телефонів і ключі для захищеного обміну.</p>
+
+    <h2>Блокування застосунку: PIN-код і біометрія</h2>
+    <p>PIN-код — необов'язкова функція. Сам код ніде не зберігається: на телефоні є лише незворотний хеш від нього з випадковою сіллю, з якого відновити початковий код неможливо.</p>
+    <p>Якщо увімкнено вхід за біометрією, застосунок <strong>не отримує і не зберігає</strong> відбитки пальців, зображення обличчя чи інші біометричні дані. Перевірку виконує операційна система Android, а застосунку повертається лише результат: підтверджено чи ні.</p>
+
+    <h2>Місцезнаходження (функція «Геозона»)</h2>
+    <p>Геозона — необов'язкова функція, вимкнена за замовчуванням. Якщо ви її вмикаєте, застосунок запитує доступ до місцезнаходження, зокрема у фоновому режимі — інакше система не зможе повідомити про вихід із зони, коли застосунок закритий.</p>
+    <p>Координати позначеної точки «дому» та радіус зони зберігаються <strong>лише на вашому телефоні</strong>. За перетином межі стежить системний сервіс геолокації Google Play на самому пристрої. Ні координати, ні маршрути, ні історія переміщень, ні сам факт входу чи виходу із зони на relay-сервер і будь-куди інде не передаються: при спрацюванні надсилається та сама команда комп'ютеру, що й при натисканні кнопки вручну.</p>
+    <p>Функцію можна вимкнути в розділі «Налаштування → Геозона», а наданий дозвіл — відкликати в системних налаштуваннях телефона.</p>
+
+    <h2>Віджети, плитка швидких налаштувань і сповіщення</h2>
+    <p>Щоб віджет на робочому столі та плитка у шторці показували стан комп'ютера одразу, застосунок зберігає на телефоні останній отриманий знімок стану: назву комп'ютера, ознаку «в мережі», знеособлені показники навантаження (процесор, пам'ять, диск, час роботи) і час до запланованого вимкнення. Ці дані локальні й нікуди не надсилаються.</p>
+    <p>Сповіщення (зворотний відлік до вимкнення та повідомлення про спрацювання геозони) формуються на самому телефоні.</p>
+
+    <h2>Журнал подій</h2>
+    <p>Застосунок веде локальний журнал останніх команд: що було надіслано, якому комп'ютеру, звідки (із застосунку, з віджета, зі шторки, зі сповіщення чи за геозоною) і чим завершилося. Зберігається до 100 останніх записів лише на телефоні; журнал можна очистити кнопкою в розділі «Налаштування → Журнал».</p>
+
+    <h2>Дозволи та навіщо вони потрібні</h2>
+    <ul>
+      <li><strong>Інтернет</strong> — зв'язок із комп'ютером через relay-сервер.</li>
+      <li><strong>Камера</strong> — сканування QR-коду під час підключення комп'ютера. Зображення з камери обробляється на пристрої та не зберігається.</li>
+      <li><strong>Сповіщення</strong> — зворотний відлік таймера та повідомлення про спрацювання автоматики.</li>
+      <li><strong>Місцезнаходження, зокрема у фоні</strong> — лише для функції «Геозона», якщо ви її увімкнули.</li>
+      <li><strong>Біометрія</strong> — підтвердження особи під час розблокування застосунку, якщо ви увімкнули цей спосіб входу.</li>
+    </ul>
+
+    <h2>Relay-сервер</h2>
+    <p>Для доставки повідомлень relay-сервер обробляє технічні дані підключення: IP-адресу, час і тип події, скорочені фрагменти ідентифікаторів і токенів, назву пристрою та дані спарювання. Технічні логи зберігаються до 14 днів. Дані активних спарювань зберігаються, доки не будуть відкликані чи видалені.</p>
+
+    <h2>Захист даних</h2>
+    <p>Команди та статуси між телефоном і комп'ютером передаються через relay захищеним з'єднанням. Їхній вміст додатково шифрується між спареними пристроями; relay-сервер передає зашифровані повідомлення і не призначений для читання їхнього вмісту.</p>
+
+    <h2>Передача та видалення даних</h2>
+    <p>Дані не продаються і не передаються третім особам для реклами чи аналітики. Щоб припинити зв'язок, видаліть пристрій у застосунку або відкличте доступ на комп'ютері — локальні дані про цей пристрій, включно з налаштуваннями його віджетів і геозони, буде видалено. Видалення застосунку стирає всі локальні дані, включно з PIN-кодом і журналом.</p>
+
+    <h2>Діти</h2>
+    <p>Застосунок не призначений для дітей віком до 13 років і не збирає дані про них свідомо.</p>
+
+    <h2>Зміни політики</h2>
+    <p>Політика може оновлюватися разом із новими версіями застосунку. Дата набрання чинності вказана на початку сторінки.</p>
+
+    <h2>Зв'язок</h2>
+    <p>З питань конфіденційності та видалення серверних даних напишіть у <a href="https://t.me/grant1003">Telegram</a> або <a href="https://discord.com/users/kiano1">Discord</a>.</p>
+  </main>
+
   <main data-language-content="en" hidden>
     <h1>PC Control Privacy Policy</h1>
-    <p>Effective date: August 5, 2026</p>
-    <h2>Data we use</h2>
-    <p>PC Control does not require registration, your name, phone number, email address, location, advertising identifier, or access to contacts.</p>
-    <p>The phone stores the names of added PCs, device identifiers, tokens, and connection keys. The PC stores paired-device data and keys for secure communication. This data is needed for reconnection and remote control.</p>
+    <p>Effective date: August 14, 2026</p>
+
+    <h2>In short</h2>
+    <p>PC Control does not require registration, your name, phone number, email address, advertising identifier, or access to contacts. There is no account in the app. Data is not sold and is not used for advertising.</p>
+
+    <h2>What is stored on your devices</h2>
+    <p>On the phone: names of added computers, device identifiers, tokens, and connection keys needed to reconnect. Secrets (the device token and the end-to-end encryption key) are stored encrypted — the encryption key lives in the Android secure storage (Keystore).</p>
+    <p>On the computer: data about paired phones and keys for secure communication.</p>
+
+    <h2>App lock: PIN and biometrics</h2>
+    <p>The PIN is optional. The code itself is never stored: the phone keeps only an irreversible hash of it with a random salt, from which the original code cannot be recovered.</p>
+    <p>If biometric unlock is enabled, the app <strong>does not receive or store</strong> fingerprints, face images, or any other biometric data. The check is performed by the Android operating system, and the app receives only the result: confirmed or not.</p>
+
+    <h2>Location (the "Geofence" feature)</h2>
+    <p>The geofence is an optional feature, disabled by default. If you enable it, the app requests location access, including in the background — otherwise the system cannot report that you left the zone while the app is closed.</p>
+    <p>The coordinates of the marked "home" spot and the zone radius are stored <strong>on your phone only</strong>. The boundary is watched by the Google Play system location service on the device itself. Neither the coordinates, nor routes, nor location history, nor even the fact that you entered or left the zone is sent to the relay server or anywhere else: a trigger sends exactly the same command to the computer as a manual button press.</p>
+    <p>You can turn the feature off under "Settings → Geofence", and revoke the granted permission in your phone's system settings.</p>
+
+    <h2>Widgets, quick settings tile, and notifications</h2>
+    <p>So that the home screen widget and the quick settings tile can show the computer's state immediately, the app stores the last received state snapshot on the phone: computer name, an "online" flag, anonymous load figures (CPU, memory, disk, uptime), and the time remaining before a scheduled shutdown. This data is local and is not sent anywhere.</p>
+    <p>Notifications (the shutdown countdown and the geofence trigger message) are created on the phone itself.</p>
+
+    <h2>Activity log</h2>
+    <p>The app keeps a local log of recent commands: what was sent, to which computer, from where (the app, a widget, the tile, a notification, or the geofence), and how it ended. Up to 100 recent entries are kept on the phone only; the log can be cleared with a button under "Settings → Activity log".</p>
+
+    <h2>Permissions and why they are needed</h2>
+    <ul>
+      <li><strong>Internet</strong> — communication with the computer through the relay server.</li>
+      <li><strong>Camera</strong> — scanning the QR code when connecting a computer. The camera image is processed on the device and is not stored.</li>
+      <li><strong>Notifications</strong> — the timer countdown and messages about automation triggering.</li>
+      <li><strong>Location, including in the background</strong> — only for the "Geofence" feature, if you enabled it.</li>
+      <li><strong>Biometrics</strong> — identity confirmation when unlocking the app, if you enabled that sign-in method.</li>
+    </ul>
+
     <h2>Relay server</h2>
     <p>To deliver messages, the relay server processes technical connection data: IP address, event time and type, shortened fragments of identifiers and tokens, device name, and pairing data. Technical logs are retained for up to 14 days. Active pairing data is retained until it is revoked or deleted.</p>
+
     <h2>Data protection</h2>
     <p>Commands and status information are sent between the phone and PC through the relay over a secure connection. Their contents are additionally encrypted between paired devices; the relay server forwards encrypted messages and is not intended to read their contents.</p>
+
     <h2>Data sharing and deletion</h2>
-    <p>Data is not sold or used for advertising. To stop the connection, remove the device in the app or revoke access on the PC; local data on the relevant device will be deleted.</p>
+    <p>Data is not sold and is not shared with third parties for advertising or analytics. To stop the connection, remove the device in the app or revoke access on the PC — local data about that device, including its widget and geofence settings, will be deleted. Uninstalling the app erases all local data, including the PIN and the activity log.</p>
+
+    <h2>Children</h2>
+    <p>The app is not intended for children under 13 and does not knowingly collect their data.</p>
+
+    <h2>Policy changes</h2>
+    <p>This policy may be updated together with new versions of the app. The effective date is shown at the top of the page.</p>
+
     <h2>Contact</h2>
     <p>For privacy questions or deletion of server data, contact us through <a href="https://t.me/grant1003">Telegram</a> or <a href="https://discord.com/users/kiano1">Discord</a>.</p>
   </main>
@@ -53,16 +187,21 @@
   <script>
     const buttons = document.querySelectorAll('[data-language]');
     const sections = document.querySelectorAll('[data-language-content]');
+    const titles = {
+      ru: 'Политика конфиденциальности — PC Control',
+      uk: 'Політика конфіденційності — PC Control',
+      en: 'PC Control Privacy Policy',
+    };
     function setLanguage(language) {
       document.documentElement.lang = language;
-      document.title = language === 'ru' ? 'Политика конфиденциальности — PC Control' : 'PC Control Privacy Policy';
+      document.title = titles[language] || titles.en;
       sections.forEach(section => { section.hidden = section.dataset.languageContent !== language; });
       buttons.forEach(button => { button.setAttribute('aria-pressed', String(button.dataset.language === language)); });
       localStorage.setItem('pc-control-privacy-language', language);
     }
     buttons.forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
     const savedLanguage = localStorage.getItem('pc-control-privacy-language');
-    if (savedLanguage === 'en' || savedLanguage === 'ru') setLanguage(savedLanguage);
+    if (savedLanguage && titles[savedLanguage]) setLanguage(savedLanguage);
   </script>
 </body>
 </html>
